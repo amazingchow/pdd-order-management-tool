@@ -112,7 +112,6 @@ def order_management_tool():
 
 def save_workbook():
     if type(_Workbook) is not object:
-        global _Workbook
         _Workbook.save("{}/Desktop/待发货表-{}.xls".format(os.path.expanduser("~"), datetime.date.today()))
 
 
