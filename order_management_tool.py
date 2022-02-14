@@ -1,4 +1,5 @@
 # -*- coding: utf-8 -*-
+import atexit
 import datetime
 import os
 # fix issue: urlopen error [SSL: CERTIFICATE_VERIFY_FAILED] certificate verify failed.
@@ -13,6 +14,8 @@ from selenium import webdriver
 from selenium.webdriver.common.by import By
 from selenium.webdriver.support import expected_conditions as EC
 from selenium.webdriver.support.ui import WebDriverWait
+
+_Workbook = object()
 
 
 def order_management_tool():
@@ -31,8 +34,9 @@ def order_management_tool():
             print("错误输入, 请重新输入 ...")
     
     if input_cmd.lower() == "y":
-        workbook = xlwt.Workbook()
-        sheet = workbook.add_sheet("待发货信息")
+        global _Workbook
+        _Workbook = xlwt.Workbook()
+        sheet = _Workbook.add_sheet("待发货信息")
         header_font = xlwt.Font()
         header_font.name = "Arial"
         header_font.bold = True
@@ -100,13 +104,17 @@ def order_management_tool():
                 sheet.write(row_num, 3, address.strip())
 
                 row_num += 1
-            input_cmd = input("是否跳转下一页? 输入y/Y确认跳转; 输入n/N停止程序.\n>> ")
-        
-        workbook.save("{}/Desktop/待发货表-{}.xls".format(os.path.expanduser("~"), datetime.date.today()))
+            input_cmd = input("是否已经跳转下一页? 输入y/Y确认跳转; 输入n/N停止程序.\n>> ")
     
     driver.close()
     driver.quit()
 
 
+def save_workbook():
+    if type(_Workbook) is not object:
+        _Workbook.save("{}/Desktop/待发货表-{}.xls".format(os.path.expanduser("~"), datetime.date.today()))
+
+
 if __name__ == "__main__":
+    atexit.register(save_workbook)
     order_management_tool()
