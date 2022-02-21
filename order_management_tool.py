@@ -1,6 +1,5 @@
 # -*- coding: utf-8 -*-
 import atexit
-import datetime
 import os
 # fix issue: urlopen error [SSL: CERTIFICATE_VERIFY_FAILED] certificate verify failed.
 import ssl
@@ -112,7 +111,10 @@ def order_management_tool():
 
 def save_workbook():
     if type(_Workbook) is not object:
-        _Workbook.save("{}/Desktop/待发货表-{}.xls".format(os.path.expanduser("~"), datetime.date.today()))
+        _Workbook.save("{}/Desktop/待发货表-{}.xls".format(
+            os.path.expanduser("~"),
+            time.strftime("%Y-%m-%d %H:%M:%S", time.localtime())
+        ))
 
 
 if __name__ == "__main__":
