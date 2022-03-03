@@ -21,7 +21,7 @@ def order_management_tool():
     options = webdriver.ChromeOptions()
     prefs = {"profile.content_settings.exceptions.clipboard": 1}
     options.add_experimental_option("prefs", prefs)
-    driver = uc.Chrome()
+    driver = uc.Chrome(version_main=98)
     driver.set_page_load_timeout(60)
     driver.get("https://mms.pinduoduo.com/orders/list")
     driver.maximize_window()
